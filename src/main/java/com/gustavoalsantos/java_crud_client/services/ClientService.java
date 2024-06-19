@@ -28,12 +28,29 @@ public class ClientService {
         return result.map(x -> new ClientDTO(x));
     }
 
+    @Transactional
     public ClientDTO insert(ClientDTO dto){
         Client entity = new Client();
         copyDTOClient(entity, dto);
         entity = repository.save(entity);
         return new ClientDTO(entity);
     }
+
+    @Transactional
+    public ClientDTO update(Long id, ClientDTO dto){
+        Client entity = repository.getReferenceById(id);
+        copyDTOClient(entity, dto);
+        entity = repository.save(entity);
+        return new ClientDTO(entity);
+    }
+
+
+
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
 
     public void copyDTOClient(Client client, ClientDTO dto){
 

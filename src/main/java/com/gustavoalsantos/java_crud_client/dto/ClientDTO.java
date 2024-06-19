@@ -13,6 +13,9 @@ public class ClientDTO {
     private LocalDate birthDate;
     private Integer children;
 
+    public ClientDTO() {
+    }
+
     public ClientDTO(Client client) {
         this.id = client.getId();
         this.name = client.getName();
