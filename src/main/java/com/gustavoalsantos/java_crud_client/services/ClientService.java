@@ -3,11 +3,15 @@ package com.gustavoalsantos.java_crud_client.services;
 import com.gustavoalsantos.java_crud_client.dto.ClientDTO;
 import com.gustavoalsantos.java_crud_client.entities.Client;
 import com.gustavoalsantos.java_crud_client.repositories.ClientRepository;
+import com.gustavoalsantos.java_crud_client.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -18,8 +22,13 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id){
-        Client client = repository.findById(id).get();
-        return new ClientDTO(client);
+        try {
+            Client client = repository.findById(id).get();
+            return new ClientDTO(client);
+        }
+        catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
     }
 
     @Transactional(readOnly = true)
@@ -38,10 +47,15 @@ public class ClientService {
 
     @Transactional
     public ClientDTO update(Long id, ClientDTO dto){
-        Client entity = repository.getReferenceById(id);
-        copyDTOClient(entity, dto);
-        entity = repository.save(entity);
-        return new ClientDTO(entity);
+        try {
+            Client entity = repository.getReferenceById(id);
+            copyDTOClient(entity, dto);
+            entity = repository.save(entity);
+            return new ClientDTO(entity);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
     }
 
 
