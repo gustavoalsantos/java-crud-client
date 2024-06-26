@@ -1,15 +1,24 @@
 package com.gustavoalsantos.java_crud_client.dto;
 
 import com.gustavoalsantos.java_crud_client.entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
 
+
+
     private Long id;
+
+    @NotBlank(message = "Campo requerido")
     private String name;
     private String cpf;
     private Double income;
+    
+    @PastOrPresent(message = "Data inválida")
     private LocalDate birthDate;
     private Integer children;
 
