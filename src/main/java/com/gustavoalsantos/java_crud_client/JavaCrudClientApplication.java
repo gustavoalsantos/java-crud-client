@@ -10,4 +10,5 @@ public class JavaCrudClientApplication {
 		SpringApplication.run(JavaCrudClientApplication.class, args);
 	}
 
+
 }
